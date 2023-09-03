@@ -1,4 +1,5 @@
 'use client'
+
 import React, { useState, useEffect } from 'react';
 import {
     AlertDialog,
@@ -13,32 +14,41 @@ import {
 } from "@/components/ui/alert-dialog"
 
 export function DesktopBlocker() {
-    const [isDesktop, setIsDesktop] = useState(false);
+    const [showDialog, setShowDialog] = useState(false);
+    const [message, setMessage] = useState('');
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
     useEffect(() => {
-        const updateWindowSize = () => {
-            // 640px is the default breakpoint for Tailwind's "sm" size
-            setIsDesktop(window.innerWidth >= 640);
-        };
+        // Check if the app is running in standalone mode
+        const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+        if (!isStandalone) {
+            if (isMobile) {
+                // Detect mobile browser
+                const userAgent = window.navigator.userAgent.toLowerCase();
 
-        updateWindowSize(); // Update the state at the start
-        window.addEventListener('resize', updateWindowSize); // Listen for window resize events
+                if (userAgent.indexOf('chrome') > -1) {
+                    setMessage('To install the app you need to add this website to your homescreen. In your Chrome browser menu, tap the More button and choose Install App.');
+                } else if (userAgent.indexOf('safari') > -1) {
+                    setMessage('To install the app you need to add this website to your homescreen. In your Safari browser menu, tap the Share icon and choose Add to Home Screen in the options.');
+                }
+            } else {
+                setMessage('Sorry, this app is mobile only. Visit pwa-demo-mu.vercel.app on mobile to install the app.');
+            }
 
-        return () => {
-            // Cleanup the event listener
-            window.removeEventListener('resize', updateWindowSize);
-        };
+            // Show dialog
+            setShowDialog(true);
+        }
     }, []);
 
-    return isDesktop ? (
+    return showDialog ? (
         <div>
             <AlertDialog open={true}>
                 <AlertDialogTrigger>Open</AlertDialogTrigger>
                 <AlertDialogContent>
                     <AlertDialogHeader>
-                        <AlertDialogTitle>Sorry, this app is mobile only</AlertDialogTitle>
+                        <AlertDialogTitle>{isMobile ? 'Add to homescreen' : 'Not Supported'}</AlertDialogTitle>
                         <AlertDialogDescription>
-                            Visit pwa-demo-mu.vercel.app on mobile to install the app
+                            {message}
                         </AlertDialogDescription>
                     </AlertDialogHeader>
                 </AlertDialogContent>
