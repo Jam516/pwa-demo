@@ -16,9 +16,10 @@ import {
 export function DesktopBlocker() {
     const [showDialog, setShowDialog] = useState(false);
     const [message, setMessage] = useState('');
-    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    const [headerMessage, setHeaderMessage] = useState('');
 
     useEffect(() => {
+        const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
         // Check if the app is running in standalone mode
         const isStandalone = window.matchMedia('(display-mode: standalone)').matches;
         if (!isStandalone) {
@@ -28,11 +29,14 @@ export function DesktopBlocker() {
 
                 if (userAgent.indexOf('chrome') > -1) {
                     setMessage('To install the app you need to add this website to your homescreen. In your Chrome browser menu, tap the More button and choose Install App.');
+                    setHeaderMessage('Add to homescreen');
                 } else if (userAgent.indexOf('safari') > -1) {
                     setMessage('To install the app you need to add this website to your homescreen. In your Safari browser menu, tap the Share icon and choose Add to Home Screen in the options.');
+                    setHeaderMessage('Add to homescreen');
                 }
             } else {
                 setMessage('Sorry, this app is mobile only. Visit pwa-demo-mu.vercel.app on mobile to install the app.');
+                setHeaderMessage('Visit on Mobile');
             }
 
             // Show dialog
@@ -46,7 +50,7 @@ export function DesktopBlocker() {
                 <AlertDialogTrigger>Open</AlertDialogTrigger>
                 <AlertDialogContent>
                     <AlertDialogHeader>
-                        <AlertDialogTitle>{isMobile ? 'Add to homescreen' : 'Not Supported'}</AlertDialogTitle>
+                        <AlertDialogTitle>{headerMessage}</AlertDialogTitle>
                         <AlertDialogDescription>
                             {message}
                         </AlertDialogDescription>
