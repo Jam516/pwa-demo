@@ -31,7 +31,7 @@ export function DesktopBlocker() {
                     setMessage('To install the app you need to add this website to your homescreen. In your Chrome browser menu, tap the More button and choose Install App.');
                     setHeaderMessage('Add to homescreen');
                 } else if (userAgent.indexOf('safari') > -1) {
-                    setMessage('To install the app you need to add this website to your homescreen. In your Safari browser menu, tap the Share icon and choose Add to Home Screen in the options.');
+                    setMessage('To install the app you need to add this website to your homescreen. In your Safari browser menu, tap the Share icon and choose Add to Home Screen.');
                     setHeaderMessage('Add to homescreen');
                 }
             } else {
