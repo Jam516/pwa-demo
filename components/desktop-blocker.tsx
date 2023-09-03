@@ -20,7 +20,7 @@ export function DesktopBlocker() {
 
     useEffect(() => {
         // Check if the app is running in standalone mode
-        const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+        const isStandalone = window.matchMedia('(display-mode: standalone)').matches;
         if (!isStandalone) {
             if (isMobile) {
                 // Detect mobile browser
