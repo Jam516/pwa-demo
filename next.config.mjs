@@ -3,6 +3,9 @@ import path from "path";
 
 import withPWAInit from "next-pwa";
 
+import { createRequire } from 'module'; // Built-in Node.js method for ES modules
+const require = createRequire(import.meta.url); // Initialize it
+
 const isDev = process.env.NODE_ENV !== "production";
 
 /** @type {import('next-pwa').PWAConfig} */
